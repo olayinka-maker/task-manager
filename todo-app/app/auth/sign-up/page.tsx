@@ -4,76 +4,96 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { auth } from "@/lib/firebase/config";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const [errors, setErrors] = useState({
-    username: "",
+    email: "",
     password: "",
   });
+  const router = useRouter();
 
   const validateForm = () => {
     const newErrors = {
-      username: "",
+      email: "",
       password: "",
     };
 
-    if (formData.username.length < 3) {
-      newErrors.username = "Username must be at least 3 characters";
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
     }
 
-    if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
-    } else if (
-      !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(formData.password)
-    ) {
-      newErrors.password =
-        "Password must contain at least one letter and one number";
+    // Password validation
+    if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
     }
 
     setErrors(newErrors);
-    return !newErrors.username && !newErrors.password;
+    return !newErrors.email && !newErrors.password;
   };
 
-  //   const handleChange = (e) => {
-  //     const { name, value } = e.target;
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       [name]: value,
-  //     }));
-  //     // Clear error when user starts typing
-  //     if (errors[name]) {
-  //       setErrors((prev) => ({
-  //         ...prev,
-  //         [name]: "",
-  //       }));
-  //     }
-  //   };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
 
-  //   const handleSubmit = async (e) => {
-  //     e.preventDefault();
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    console.log(formData);
 
-  //     if (!validateForm()) {
-  //       return;
-  //     }
+    // Clear error when user starts typing
+    // if (errors[name]) {
+    //   setErrors((prev) => ({
+    //     ...prev,
+    //     [name]: "",
+    //   }));
+    // }
+  };
 
-  //     try {
-  //       setIsLoading(true);
-  //       // Simulate API call
-  //       await new Promise((resolve) => setTimeout(resolve, 1500));
-  //       console.log("Form data:", formData);
-  //       alert("Account created successfully!"); // Simple alert instead of toast
-  //     } catch (error) {
-  //       alert("Something went wrong. Please try again."); // Simple alert instead of toast
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      // Simulate API call
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formData.email, // Using email as email
+        formData.password
+      );
+      const user = userCredential.user;
+      const userId = user.uid;
+      console.log(userCredential);
+      console.log(userId);
+
+      // Update profile with email
+      // await updateProfile(userCredential.user, {
+      //   displayName: formData.email,
+      // });
+
+      // Redirect to dashboard or home page
+      router.push("/");
+      alert("Account created successfully!"); // Simple alert instead of toast
+    } catch (error) {
+      alert("Something went wrong. Please try again."); // Simple alert instead of toast
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div
@@ -96,18 +116,18 @@ const SignUpPage = () => {
           </p>
         </CardHeader>
         <CardContent>
-          <form onSubmit={() => {}} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Input
-                name="username"
-                placeholder="Username"
-                className="bg-white"
+                name="email"
+                placeholder="email"
+                className="bg-white text-gray-700"
                 disabled={isLoading}
-                value={formData.username}
-                onChange={() => {}}
+                value={formData.email}
+                onChange={handleChange}
               />
-              {errors.username && (
-                <p className="text-sm text-red-700">{errors.username}</p>
+              {errors.email && (
+                <p className="text-sm text-red-700">{errors.email}</p>
               )}
             </div>
 
@@ -117,10 +137,10 @@ const SignUpPage = () => {
                   name="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
-                  className="bg-white pr-10"
+                  className="bg-white text-gray-700 pr-10"
                   disabled={isLoading}
                   value={formData.password}
-                  onChange={() => {}}
+                  onChange={handleChange}
                 />
                 <Button
                   type="button"
