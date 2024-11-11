@@ -1,3 +1,5 @@
+import Header from "@/components/Header";
+import WelcomeBanner from "@/components/WelcomeBanner";
 import React from "react";
 
 const TodoDashboard = () => {
@@ -10,7 +12,7 @@ const TodoDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen  flex  flex-col  bg-white">
       <div className="flex">
         {/* Sidebar */}
         <div className="w-48 bg-white p-4 border-r">
@@ -39,20 +41,11 @@ const TodoDashboard = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 p-8">
-          <div className="flex justify-between items-center mb-4">
-            <div>
-              <h1 className="text-2xl font-bold mb-2">
-                Hello, Beautiful Human!
-              </h1>
-              <p className="text-gray-600">What do you want to do today?</p>
-            </div>
-            <button className="bg-orange-600 text-white px-4 py-2 rounded-lg">
-              Sign out
-            </button>
-          </div>
+        <div className="flex-1 flex p-8 flex-col ">
+          <Header />
+          <WelcomeBanner />
 
-          <div className="flex gap-8">
+          <div className="flex gap-6 justify-center mx-auto  items-center w-[90%]">
             {/* Tasks List */}
             <div className="flex-1">
               <div className="flex justify-between items-center mb-4">
