@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { auth } from "@/lib/firebase/config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -180,10 +181,12 @@ const SignUpPage = () => {
             <p className="text-white text-sm">
               Already have an account?{" "}
               <Button
-                className="text-white underline hover:text-amber-800 p-0"
+                className="text-white bg-non border-none underline hover:text-amber-800 p-0"
                 disabled={isLoading}
               >
-                Sign in here
+                <Link href={"/auth/sign-in"}>
+                  Sign in <span>here</span>
+                </Link>
               </Button>
             </p>
           </div>
