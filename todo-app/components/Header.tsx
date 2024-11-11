@@ -8,9 +8,9 @@ const Header = () => {
       <div>
         <h1 className="text-2xl font-bold mb-2">Dashboard</h1>
       </div>
-      <button className="bg-orange-600 text-white px-4 py-2 rounded-lg">
+      <button className="bg-orange-600 flex gap-2 text-white px-4 py-2 rounded-md">
         Sign out
-        <Image src={LogOut} alt="logout" width={40} height={40} />
+        <LogOut />
       </button>
     </div>
   );

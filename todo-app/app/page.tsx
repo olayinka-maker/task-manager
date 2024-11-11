@@ -9,46 +9,27 @@ const TodoDashboard = () => {
     { id: 3, title: "Get nails and hair done", completed: false },
     { id: 4, title: "Prepare presentations", highlighted: true },
     { id: 5, title: "Go to the gym", highlighted: true },
+    { id: 6, title: "Get nails and hair done", completed: false },
+    { id: 7, title: "Prepare presentations", highlighted: true },
+    { id: 8, title: "Go to the gym", highlighted: true },
+    { id: 9, title: "Get nails and hair done", completed: false },
+    { id: 10, title: "Prepare presentations", highlighted: true },
+    { id: 11, title: "Go to the gym", highlighted: true },
+    // Add more tasks as needed
   ];
 
   return (
-    <div className="min-h-screen  flex  flex-col  bg-white">
+    <div className="min-h-screen w-full flex flex-col overflow-hidden bg-white">
       <div className="flex">
-        {/* Sidebar */}
-        <div className="w-48 bg-white p-4 border-r">
-          <div className="flex items-center gap-2 mb-8">
-            <span className="text-orange-600 font-bold text-xl">To-Do App</span>
-          </div>
-
-          <button className="w-full flex items-center gap-2 mb-8">
-            <span className="bg-orange-600 text-white rounded-full w-6 h-6 flex items-center justify-center">
-              +
-            </span>
-            <span className="text-gray-800">Add Task</span>
-          </button>
-
-          <nav className="space-y-2">
-            <button className="w-full text-left p-2 bg-orange-100 rounded-lg text-gray-800">
-              Dashboard
-            </button>
-            <button className="w-full text-left p-2 text-gray-600">
-              Active
-            </button>
-            <button className="w-full text-left p-2 text-gray-600">
-              Completed
-            </button>
-          </nav>
-        </div>
-
         {/* Main Content */}
-        <div className="flex-1 flex p-8 flex-col ">
+        <div className="flex-1 flex p-8 flex-col">
           <Header />
           <WelcomeBanner />
 
-          <div className="flex gap-6 justify-center mx-auto  items-center w-[90%]">
+          <div className="flex gap-6  justify-center mx-auto relative items-start w-[90%]">
             {/* Tasks List */}
-            <div className="flex-1">
-              <div className="flex justify-between items-center mb-4">
+            <div className="flex-1 ralative   max-h-[calc(100vh-200px)] overflow-y-auto">
+              <div className="flex fixed  z-40 bg-gray-200 w-[55%] justify-between items-center ">
                 <h2 className="font-medium text-gray-800">Today's Tasks</h2>
                 <div className="flex items-center gap-4">
                   <button className="text-orange-600 text-sm">
