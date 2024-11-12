@@ -1,24 +1,22 @@
 "use client";
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState } from "react";
 
-interface ModalContextType {
-  isAddTaskModalOpen: boolean;
-  openAddTaskModal: () => void;
-  closeAddTaskModal: () => void;
-}
+type ModalContextType = {
+  isOpen: boolean;
+  openModal: () => void;
+  closeModal: () => void;
+};
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
 
-export const ModalProvider = ({ children }: { children: ReactNode }) => {
-  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
+export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-  const openAddTaskModal = () => setIsAddTaskModalOpen(true);
-  const closeAddTaskModal = () => setIsAddTaskModalOpen(false);
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
 
   return (
-    <ModalContext.Provider
-      value={{ isAddTaskModalOpen, openAddTaskModal, closeAddTaskModal }}
-    >
+    <ModalContext.Provider value={{ isOpen, openModal, closeModal }}>
       {children}
     </ModalContext.Provider>
   );

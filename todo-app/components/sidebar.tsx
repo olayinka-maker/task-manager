@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { useModal } from "@/context/ModalContext";
 
 const navItems = [
   { id: 1, label: "Dashboard", href: "/" },
@@ -7,21 +10,18 @@ const navItems = [
   { id: 3, label: "Completed", href: "/completed" },
 ];
 
-type SideBarProps = {
-  onAddTaskClick: () => void;
-};
+const SideBar = () => {
+  const { openModal } = useModal();
 
-const SideBar: React.FC<SideBarProps> = ({ onAddTaskClick }) => {
   return (
     <section className="min-h-screen">
-      {/* SideBar */}
       <div className="w-48 bg-white h-screen p-4 border-r">
         <div className="flex items-center gap-2 mb-8">
           <span className="text-orange-600 font-bold text-xl">To-Do App</span>
         </div>
 
         <button
-          onClick={onAddTaskClick}
+          onClick={openModal}
           className="w-full flex items-center gap-2 mb-8 text-left"
         >
           <span className="bg-orange-600 text-white rounded-full w-6 h-6 flex items-center justify-center">
