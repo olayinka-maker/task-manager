@@ -4,9 +4,14 @@ import Header from "@/components/Header";
 import WelcomeBanner from "@/components/WelcomeBanner";
 import React, { useState } from "react";
 import { useModal } from "@/context/ModalContext";
+import { useAuth } from "@/context/AuthContext";
+import { log } from "console";
 
 const TodoDashboard = () => {
   const { openModal, closeModal, isOpen } = useModal();
+  const { user } = useAuth();
+  console.log(user?.email);
+
   console.log(isOpen);
 
   const tasks = [

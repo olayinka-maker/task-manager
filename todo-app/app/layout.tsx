@@ -4,6 +4,7 @@ import "./globals.css";
 import SideBar from "@/components/sidebar";
 import { ModalProvider } from "@/context/ModalContext";
 import SideBarWrapper from "@/components/sideBarWrapper";
+import { AuthProvider } from "@/context/AuthContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,10 +32,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex antialiased`}
       >
-        <ModalProvider>
-          <SideBarWrapper />
-          {children}
-        </ModalProvider>
+        <AuthProvider>
+          <ModalProvider>
+            <SideBarWrapper />
+            {children}
+          </ModalProvider>
+        </AuthProvider>
       </body>
     </html>
   );

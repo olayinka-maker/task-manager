@@ -1,10 +1,14 @@
 import React from "react";
+import { useAuth } from "@/context/AuthContext";
 
 const WelcomeBanner = () => {
+  const { user } = useAuth();
+  console.log(user?.email);
+
   return (
     <div className="mb-8 flex items-center shadow-lg border-gray-100 px-6 border relative rounded-md w-[90%] mx-auto justify-between">
       <div>
-        <h2 className="text-4xl font-bold mb-2">Hello, Beautiful Human!</h2>
+        <h2 className="text-4xl font-bold mb-2">Hello, {user?.email}</h2>
         <p className="text-gray-600">What do you want to do today?</p>
       </div>
       <div className="relative w-32 h-40">
