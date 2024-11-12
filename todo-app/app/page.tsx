@@ -34,16 +34,13 @@ const TodoDashboard = () => {
 
           <div className="flex gap-6  justify-center mx-auto  items-start w-[90%]">
             {/* TaskList banner */}
-            <div className="flex-1 relative max-h-[calc(100vh-200px)] overflow-y-auto">
-              <div className="flex fixed  z-40 bg-gray-200 top-0 right-0 left-0 justify-between items-center ">
+            <div className="flex-1  relative max-h-[calc(100vh-200px)] overflow-y-auto">
+              <div className="flex px-2  z-40 bg-white py-2 top-0 right-0 left-0 justify-between items-center ">
                 <h2 className="font-medium text-gray-800">Today's Tasks</h2>
                 <div className="flex items-center gap-4">
                   <button className="text-orange-600 text-sm">
                     Delete All
                   </button>
-                  <span className="text-gray-600 text-sm">
-                    Monday, 18 December 2023
-                  </span>
                 </div>
               </div>
               {/* Tasks List */}
@@ -67,6 +64,9 @@ const TodoDashboard = () => {
 
             {/* Stats Cards */}
             <div className="w-48 space-y-4">
+              <span className="text-gray-600 text-sm">
+                Monday, 18 December 2023
+              </span>
               <div className="bg-orange-600 p-4 rounded-lg text-white">
                 <div className="mb-2">
                   <span className="text-3xl font-bold">40%</span>
