@@ -12,6 +12,7 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
         primaryGold: "#EDB046",
+        SecondaryGold: "#BA5112",
       },
     },
   },

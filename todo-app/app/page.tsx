@@ -25,17 +25,17 @@ const TodoDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen w-full flex flex-col overflow-hidden bg-white">
+    <div className="min-h-screen w-full relative flex flex-col overflow-hidden bg-white">
       <div className="flex">
         {/* Main Content */}
         <div className="flex-1 flex p-8 flex-col">
           <Header />
           <WelcomeBanner />
 
-          <div className="flex gap-6  justify-center mx-auto relative items-start w-[90%]">
-            {/* Tasks List */}
-            <div className="flex-1 ralative   max-h-[calc(100vh-200px)] overflow-y-auto">
-              <div className="flex fixed  z-40 bg-gray-200 w-[55%] justify-between items-center ">
+          <div className="flex gap-6  justify-center mx-auto  items-start w-[90%]">
+            {/* TaskList banner */}
+            <div className="flex-1 relative max-h-[calc(100vh-200px)] overflow-y-auto">
+              <div className="flex fixed  z-40 bg-gray-200 top-0 right-0 left-0 justify-between items-center ">
                 <h2 className="font-medium text-gray-800">Today's Tasks</h2>
                 <div className="flex items-center gap-4">
                   <button className="text-orange-600 text-sm">
@@ -46,7 +46,7 @@ const TodoDashboard = () => {
                   </span>
                 </div>
               </div>
-
+              {/* Tasks List */}
               <div className="space-y-2">
                 {tasks.map((task) => (
                   <div

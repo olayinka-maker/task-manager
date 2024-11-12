@@ -40,11 +40,16 @@ const AddTaskModal = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end  gap-2">
             <Button variant="outline" onClick={closeModal}>
               Cancel
             </Button>
-            <Button onClick={handleSaveTask}>Save Task</Button>
+            <Button
+              className="bg-SecondaryGold hover:text-white"
+              onClick={handleSaveTask}
+            >
+              Save Task
+            </Button>
           </div>
         </div>
       </DialogContent>
