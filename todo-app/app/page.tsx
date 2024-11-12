@@ -6,7 +6,8 @@ import React, { useState } from "react";
 import { useModal } from "@/context/ModalContext";
 
 const TodoDashboard = () => {
-  const { openModal, closeModal } = useModal();
+  const { openModal, closeModal, isOpen } = useModal();
+  console.log(isOpen);
 
   const tasks = [
     { id: 1, title: "Buy monthly groceries", completed: false },
@@ -91,7 +92,7 @@ const TodoDashboard = () => {
           </div>
         </div>
       </div>
-      {openModal && <AddTaskModal open={openModal} onClose={closeModal} />}
+      <AddTaskModal />
     </div>
   );
 };

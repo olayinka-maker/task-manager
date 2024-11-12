@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import {
   Dialog,
@@ -7,24 +9,22 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { addTaskToFirebase } from "@/lib/utils";
+import { useModal } from "@/context/ModalContext";
 
-type AddTaskModalProps = {
-  open: boolean;
-  onClose: () => void;
-};
-
-const AddTaskModal: React.FC<AddTaskModalProps> = () => {
+const AddTaskModal = () => {
+  const { isOpen, closeModal } = useModal();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
 
-  //   const handleSaveTask = async () => {
-  //     await addTaskToFirebase({ title, description });
-  //     onClose();
-  //   };
+  const handleSaveTask = async () => {
+    // await addTaskToFirebase({ title, description });
+    setTitle("");
+    setDescription("");
+    closeModal();
+  };
 
   return (
-    <Dialog open>
+    <Dialog open={isOpen} onOpenChange={closeModal}>
       <DialogContent className="bg-white">
         <DialogHeader>
           <DialogTitle>Add a New Task</DialogTitle>
@@ -40,8 +40,11 @@ const AddTaskModal: React.FC<AddTaskModalProps> = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-          <div className="flex justify-end">
-            <Button>Save Task</Button>
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={closeModal}>
+              Cancel
+            </Button>
+            <Button onClick={handleSaveTask}>Save Task</Button>
           </div>
         </div>
       </DialogContent>
