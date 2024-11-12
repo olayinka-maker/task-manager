@@ -29,9 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} flex antialiased`}
-      >
+      <body className={` flex antialiased`}>
         <AuthProvider>
           <ModalProvider>
             <SideBarWrapper />

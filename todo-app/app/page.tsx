@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { useModal } from "@/context/ModalContext";
 import { useAuth } from "@/context/AuthContext";
 import { log } from "console";
+import ProtectedRoute from "@/components/ProctectedRoute";
 
 const TodoDashboard = () => {
   const { openModal, closeModal, isOpen } = useModal();

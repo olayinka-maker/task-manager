@@ -8,10 +8,12 @@ import { auth } from "@/lib/firebase/config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -51,19 +53,14 @@ const SignUpPage = () => {
       [name]: value,
     }));
     console.log(formData);
-
-    // Clear error when user starts typing
-    // if (errors[name]) {
-    //   setErrors((prev) => ({
-    //     ...prev,
-    //     [name]: "",
-    //   }));
-    // }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    ``;
+    if (user) {
+      router.push("/dashboard");
+    }
     if (!validateForm()) {
       return;
     }
@@ -81,13 +78,8 @@ const SignUpPage = () => {
       console.log(userCredential);
       console.log(userId);
 
-      // Update profile with email
-      // await updateProfile(userCredential.user, {
-      //   displayName: formData.email,
-      // });
-
       // Redirect to dashboard or home page
-      router.push("/");
+      router.push("/dashboard");
       alert("Account created successfully!"); // Simple alert instead of toast
     } catch (error) {
       alert("Something went wrong. Please try again."); // Simple alert instead of toast

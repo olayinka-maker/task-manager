@@ -1,6 +1,6 @@
 // components/ProtectedRoute.tsx
 import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, ReactNode } from "react";
 
 interface ProtectedRouteProps {
@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   useEffect(() => {
     if (!user) {
-      router.push("/login");
+      router.push("/auth/sign-in");
     }
   }, [user, router]);
 
