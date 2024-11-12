@@ -7,21 +7,25 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { addTaskToFirebase } from "@/utils/firebase";
+import { addTaskToFirebase } from "@/lib/utils";
 
-const AddTaskModal = ({ open, onClose }) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+type AddTaskModalProps = {
+  open: boolean;
+  onClose: () => void;
+};
 
-  const handleSaveTask = async () => {
-    await addTaskToFirebase({ title, description });
-    onClose();
-    // Refresh the tasks list
-  };
+const AddTaskModal: React.FC<AddTaskModalProps> = () => {
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+
+  //   const handleSaveTask = async () => {
+  //     await addTaskToFirebase({ title, description });
+  //     onClose();
+  //   };
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent>
+    <Dialog open>
+      <DialogContent className="bg-white">
         <DialogHeader>
           <DialogTitle>Add a New Task</DialogTitle>
         </DialogHeader>
@@ -37,7 +41,7 @@ const AddTaskModal = ({ open, onClose }) => {
             onChange={(e) => setDescription(e.target.value)}
           />
           <div className="flex justify-end">
-            <Button onClick={handleSaveTask}>Save Task</Button>
+            <Button>Save Task</Button>
           </div>
         </div>
       </DialogContent>

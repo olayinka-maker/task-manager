@@ -1,8 +1,13 @@
+"use client";
+import AddTaskModal from "@/components/AddTaskModal";
 import Header from "@/components/Header";
 import WelcomeBanner from "@/components/WelcomeBanner";
-import React from "react";
+import React, { useState } from "react";
+import { useModal } from "@/context/ModalContext";
 
 const TodoDashboard = () => {
+  const { isAddTaskModalOpen, closeAddTaskModal } = useModal();
+
   const tasks = [
     { id: 1, title: "Buy monthly groceries", completed: false },
     { id: 2, title: "Pick up the kids", completed: false },
@@ -86,6 +91,9 @@ const TodoDashboard = () => {
           </div>
         </div>
       </div>
+      {isAddTaskModalOpen && (
+        <AddTaskModal open={isAddTaskModalOpen} onClose={closeAddTaskModal} />
+      )}
     </div>
   );
 };
