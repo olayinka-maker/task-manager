@@ -2,15 +2,27 @@
 import AddTaskModal from "@/components/AddTaskModal";
 import Header from "@/components/Header";
 import WelcomeBanner from "@/components/WelcomeBanner";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useModal } from "@/context/ModalContext";
 import { useAuth } from "@/context/AuthContext";
 import { log } from "console";
 import ProtectedRoute from "@/components/ProctectedRoute";
 import { useRouter } from "next/navigation";
+import { getDocs, doc, collection } from "firebase/firestore";
+import { db } from "@/lib/firebase/config";
+
+interface Task {
+  id: string;
+  title: string;
+  completed?: boolean;
+  highlighted?: boolean;
+}
 
 const TodoDashboard = () => {
   const { openModal, closeModal, isOpen } = useModal();
+  const [tasks, setTasks] = useState<Task[]>([
+    { id: "1", title: "Buy monthly groceries", completed: false },
+  ]);
   const { user } = useAuth();
   const router = useRouter();
   console.log(user?.email);
@@ -19,21 +31,23 @@ const TodoDashboard = () => {
     router.push("/auth/sign-in");
   }
 
-  console.log(isOpen);
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "tasks"));
+        const fetchedTasks: Task[] = [];
+        querySnapshot.forEach((doc) => {
+          fetchedTasks.push({ id: doc.id, ...doc.data() } as Task);
+        });
+        setTasks(fetchedTasks);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      }
+    };
 
-  const tasks = [
-    { id: 1, title: "Buy monthly groceries", completed: false },
-    { id: 2, title: "Pick up the kids", completed: false },
-    { id: 3, title: "Get nails and hair done", completed: false },
-    { id: 4, title: "Prepare presentations", highlighted: true },
-    { id: 5, title: "Go to the gym", highlighted: true },
-    { id: 6, title: "Get nails and hair done", completed: false },
-    { id: 7, title: "Prepare presentations", highlighted: true },
-    { id: 8, title: "Go to the gym", highlighted: true },
-    { id: 9, title: "Get nails and hair done", completed: false },
-    { id: 10, title: "Prepare presentations", highlighted: true },
-    { id: 11, title: "Go to the gym", highlighted: true },
-  ];
+    fetchTasks();
+  }, []);
+  console.log(tasks);
 
   return (
     <div className="min-h-screen w-full relative flex flex-col overflow-hidden bg-white">
