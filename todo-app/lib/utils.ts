@@ -1,3 +1,7 @@
+// utils/firebase/tasks.ts
+import { db } from "./firebase/config";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { User } from "firebase/auth";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -5,30 +9,29 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-import { getFirestore, collection, addDoc } from "firebase/firestore";
-import { getApp } from "firebase/app";
-
-const firebaseConfig = {
-  // Your Firebase configuration
-};
-
-import { db } from "./firebase/config";
-
-export const addTaskToFirebase = async ({
-  title,
-  description,
-}: {
+interface TaskData {
   title: string;
   description: string;
-}) => {
+  completed?: boolean;
+  createdAt?: any;
+  userId: string;
+}
+
+export const addTaskToFirebase = async (
+  taskData: Omit<TaskData, "createdAt">
+) => {
   try {
-    await addDoc(collection(db, "tasks"), {
-      title,
-      description,
+    const tasksRef = collection(db, "tasks");
+    const newTask = {
+      ...taskData,
       completed: false,
-      createdAt: new Date(),
-    });
-  } catch (error) {
-    console.error("Error adding task to Firebase:", error);
+      createdAt: serverTimestamp(),
+    };
+
+    const docRef = await addDoc(tasksRef, newTask);
+    return { id: docRef.id, ...newTask };
+  } catch (error: any) {
+    console.error("Error adding task: ", error.message || error.code);
+    throw error;
   }
 };

@@ -10,17 +10,64 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/context/ModalContext";
+import { addTaskToFirebase } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/context/AuthContext";
 
 const AddTaskModal = () => {
   const { isOpen, closeModal } = useModal();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const { toast } = useToast();
+  const { user } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSaveTask = async () => {
-    // await addTaskToFirebase({ title, description });
-    setTitle("");
-    setDescription("");
-    closeModal();
+    if (!user) {
+      toast({
+        title: "Error",
+        description: "You must be logged in to create tasks",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!title.trim()) {
+      toast({
+        title: "Error",
+        description: "Task title is required",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      console.log("User UID:", user.uid);
+      await addTaskToFirebase({
+        title: title.trim(),
+        description: description.trim(),
+        userId: user.uid,
+      });
+
+      toast({
+        title: "Success",
+        description: "Task added successfully",
+      });
+
+      setTitle("");
+      setDescription("");
+      closeModal();
+    } catch (error) {
+      console.error("Error saving task:", error);
+      toast({
+        title: "Error",
+        description: "Failed to add task. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -48,7 +95,7 @@ const AddTaskModal = () => {
               className="bg-SecondaryGold hover:text-white"
               onClick={handleSaveTask}
             >
-              Save Task
+              {isLoading ? "Saving..." : "Save Task"}
             </Button>
           </div>
         </div>

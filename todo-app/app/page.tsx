@@ -7,11 +7,17 @@ import { useModal } from "@/context/ModalContext";
 import { useAuth } from "@/context/AuthContext";
 import { log } from "console";
 import ProtectedRoute from "@/components/ProctectedRoute";
+import { useRouter } from "next/navigation";
 
 const TodoDashboard = () => {
   const { openModal, closeModal, isOpen } = useModal();
   const { user } = useAuth();
+  const router = useRouter();
   console.log(user?.email);
+
+  if (!user) {
+    router.push("/auth/sign-in");
+  }
 
   console.log(isOpen);
 
@@ -27,7 +33,6 @@ const TodoDashboard = () => {
     { id: 9, title: "Get nails and hair done", completed: false },
     { id: 10, title: "Prepare presentations", highlighted: true },
     { id: 11, title: "Go to the gym", highlighted: true },
-    // Add more tasks as needed
   ];
 
   return (
