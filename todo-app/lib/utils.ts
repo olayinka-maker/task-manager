@@ -35,3 +35,13 @@ export const addTaskToFirebase = async (
     throw error;
   }
 };
+
+const getCurrentDate = () => {
+  const date = new Date();
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(date);
+};

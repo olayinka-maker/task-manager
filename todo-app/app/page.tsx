@@ -8,10 +8,12 @@ import { useAuth } from "@/context/AuthContext";
 import { log } from "console";
 import ProtectedRoute from "@/components/ProctectedRoute";
 import { useRouter } from "next/navigation";
-import { getDocs, doc, collection } from "firebase/firestore";
+import { getDocs, doc, collection, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase/config";
-
-interface Task {
+import TaskListItem from "@/components/TaskListItem";
+import { useContext } from "react";
+import { useTasks } from "@/context/TaskContext";
+export interface Task {
   id: string;
   title: string;
   completed?: boolean;
@@ -20,34 +22,16 @@ interface Task {
 
 const TodoDashboard = () => {
   const { openModal, closeModal, isOpen } = useModal();
-  const [tasks, setTasks] = useState<Task[]>([
-    { id: "1", title: "Buy monthly groceries", completed: false },
-  ]);
+
+  const { tasks, completedTasks, handleTaskComplete } = useTasks();
+
   const { user } = useAuth();
   const router = useRouter();
   console.log(user?.email);
 
-  if (!user) {
-    router.push("/auth/sign-in");
-  }
-
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "tasks"));
-        const fetchedTasks: Task[] = [];
-        querySnapshot.forEach((doc) => {
-          fetchedTasks.push({ id: doc.id, ...doc.data() } as Task);
-        });
-        setTasks(fetchedTasks);
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
-      }
-    };
-
-    fetchTasks();
-  }, []);
-  console.log(tasks);
+  // if (!user) {
+  //   router.push("/sign-in");
+  // }
 
   return (
     <div className="min-h-screen w-full relative flex flex-col overflow-hidden bg-white">
@@ -70,20 +54,15 @@ const TodoDashboard = () => {
               </div>
               {/* Tasks List */}
               <div className="space-y-2">
-                {tasks.map((task) => (
-                  <div
-                    key={task.id}
-                    className={`flex items-center gap-3 p-4 rounded-lg ${
-                      task.highlighted ? "bg-orange-100" : "bg-gray-50"
-                    }`}
-                  >
-                    <input
-                      type="checkbox"
-                      className="w-5 h-5 rounded-sm border-2 border-gray-300 checked:bg-orange-600"
+                {tasks
+                  .filter((task) => !task.completed)
+                  .map((task) => (
+                    <TaskListItem
+                      key={task.id}
+                      task={task}
+                      onTaskComplete={handleTaskComplete}
                     />
-                    <span>{task.title}</span>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
 
