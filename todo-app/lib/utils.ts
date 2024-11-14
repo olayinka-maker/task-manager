@@ -36,7 +36,7 @@ export const addTaskToFirebase = async (
   }
 };
 
-const getCurrentDate = () => {
+export const getCurrentDate = () => {
   const date = new Date();
   return new Intl.DateTimeFormat("en-US", {
     weekday: "long",

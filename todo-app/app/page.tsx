@@ -13,6 +13,8 @@ import { db } from "@/lib/firebase/config";
 import TaskListItem from "@/components/TaskListItem";
 import { useContext } from "react";
 import { useTasks } from "@/context/TaskContext";
+import { getCurrentDate } from "@/lib/utils";
+
 export interface Task {
   id: string;
   title: string;
@@ -68,9 +70,7 @@ const TodoDashboard = () => {
 
             {/* Stats Cards */}
             <div className="w-48 space-y-4">
-              <span className="text-gray-600 text-sm">
-                Monday, 18 December 2023
-              </span>
+              <span className="text-black text-sm">{getCurrentDate()}</span>
               <div className="bg-orange-600 p-4 rounded-lg text-white">
                 <div className="mb-2">
                   <span className="text-3xl font-bold">40%</span>
