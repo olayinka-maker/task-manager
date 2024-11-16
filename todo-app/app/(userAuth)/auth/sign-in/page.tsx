@@ -5,15 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { auth } from "@/lib/firebase/config";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAuth } from "@/context/AuthContext";
 
-const SignUpPage = () => {
+const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -53,14 +51,19 @@ const SignUpPage = () => {
       [name]: value,
     }));
     console.log(formData);
+
+    // Clear error when user starts typing
+    // if (errors[name]) {
+    //   setErrors((prev) => ({
+    //     ...prev,
+    //     [name]: "",
+    //   }));
+    // }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    ``;
-    if (user) {
-      router.push("/dashboard");
-    }
+
     if (!validateForm()) {
       return;
     }
@@ -68,19 +71,24 @@ const SignUpPage = () => {
     try {
       setIsLoading(true);
       // Simulate API call
-      const userCredential = await createUserWithEmailAndPassword(
+      const signInUser = await signInWithEmailAndPassword(
         auth,
         formData.email, // Using email as email
         formData.password
       );
-      const user = userCredential.user;
+      const user = signInUser.user;
       const userId = user.uid;
-      console.log(userCredential);
+      console.log(signInUser);
       console.log(userId);
 
+      // Update profile with email
+      // await updateProfile(userCredential.user, {
+      //   displayName: formData.email,
+      // });
+
       // Redirect to dashboard or home page
-      router.push("/dashboard");
-      alert("Account created successfully!"); // Simple alert instead of toast
+      router.push("/");
+      alert("User Logged In successfully!"); // Simple alert instead of toast
     } catch (error) {
       alert("Something went wrong. Please try again."); // Simple alert instead of toast
     } finally {
@@ -161,23 +169,23 @@ const SignUpPage = () => {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Creating account...
+                  sign in...{" "}
                 </>
               ) : (
-                "Sign Up"
+                "Sign In"
               )}
             </Button>
           </form>
 
           <div className="text-center mt-6">
             <p className="text-white text-sm">
-              Already have an account?{" "}
+              Don't have an account?{" "}
               <Button
                 className="text-white bg-non border-none underline hover:text-amber-800 p-0"
                 disabled={isLoading}
               >
-                <Link href={"/sign-in"}>
-                  Sign in <span>here</span>
+                <Link href={"auth/sign-up"}>
+                  Create <span>here</span>
                 </Link>
               </Button>
             </p>
@@ -188,4 +196,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default SignIn;

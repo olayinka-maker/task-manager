@@ -26,10 +26,19 @@ const TodoDashboard = () => {
   const { openModal, closeModal, isOpen } = useModal();
 
   const { tasks, completedTasks, handleTaskComplete } = useTasks();
+  
 
-  const { user } = useAuth();
+  const { user,logout } = useAuth();
   const router = useRouter();
   console.log(user?.email);
+
+  const calculateTaskPercentage = () => {
+    const remainingTasks = tasks.filter(task => !task.completed).length;
+    const percentage = Math.round((remainingTasks / tasks.length) * 100);
+    return percentage;
+  };
+
+  const taskPercentage = calculateTaskPercentage()
 
   // if (!user) {
   //   router.push("/sign-in");
@@ -73,7 +82,7 @@ const TodoDashboard = () => {
               <span className="text-black text-sm">{getCurrentDate()}</span>
               <div className="bg-orange-600 p-4 rounded-lg text-white">
                 <div className="mb-2">
-                  <span className="text-3xl font-bold">40%</span>
+                  <span className="text-3xl font-bold">{taskPercentage}%</span>
                 </div>
                 <div className="text-sm">Completed tasks</div>
               </div>
