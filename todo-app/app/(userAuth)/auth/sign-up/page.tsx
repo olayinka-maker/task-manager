@@ -30,13 +30,11 @@ const SignUpPage = () => {
       password: "",
     };
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       newErrors.email = "Please enter a valid email address";
     }
 
-    // Password validation
     if (formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
     }
@@ -67,10 +65,10 @@ const SignUpPage = () => {
 
     try {
       setIsLoading(true);
-      // Simulate API call
+      
       const userCredential = await createUserWithEmailAndPassword(
         auth,
-        formData.email, // Using email as email
+        formData.email, 
         formData.password
       );
       const user = userCredential.user;
@@ -78,11 +76,10 @@ const SignUpPage = () => {
       console.log(userCredential);
       console.log(userId);
 
-      // Redirect to dashboard or home page
       router.push("/dashboard");
-      alert("Account created successfully!"); // Simple alert instead of toast
+      alert("Account created successfully!"); 
     } catch (error) {
-      alert("Something went wrong. Please try again."); // Simple alert instead of toast
+      alert("Something went wrong. Please try again."); 
     } finally {
       setIsLoading(false);
     }
