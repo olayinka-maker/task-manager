@@ -6,8 +6,9 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { getDocs, doc, collection, updateDoc } from "firebase/firestore";
+import { getDocs, doc, collection, updateDoc, where, query } from "firebase/firestore";
 import { db } from "@/lib/firebase/config";
+import { auth } from "@/lib/firebase/config";
 
 interface Task {
   id: string;
@@ -34,24 +35,33 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const fetchTasks = async () => {
+      // Check if user exists first
+      if (!auth.currentUser) return;
+  
       try {
-        const querySnapshot = await getDocs(collection(db, "tasks"));
-        const fetchedTasks: Task[] = querySnapshot.docs.map(
-          (doc) =>
-            ({
-              id: doc.id,
-              ...doc.data(),
-            } as Task)
-        );
+        const tasksRef = collection(db, "tasks");
+        const q = query(tasksRef, where("userId", "==", auth.currentUser.uid));
+        
+        const querySnapshot = await getDocs(q);
+        const fetchedTasks: Task[] = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        } as Task));
+  
         setTasks(fetchedTasks);
+        console.log(fetchTasks);
+        
         setCompletedTasks(fetchedTasks.filter((task) => task.completed));
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
     };
-
-    fetchTasks();
-  }, []);
+  
+    if (auth.currentUser) {
+      fetchTasks();
+    }
+  
+  }, [auth.currentUser]); 
 
   const handleTaskComplete = async (task: Task) => {
     try {

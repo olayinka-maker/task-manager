@@ -1,5 +1,5 @@
 // utils/firebase/tasks.ts
-import { db } from "./firebase/config";
+import { auth, db } from "./firebase/config";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { User } from "firebase/auth";
 import { type ClassValue, clsx } from "clsx";
@@ -20,7 +20,11 @@ interface TaskData {
 export const addTaskToFirebase = async (
   taskData: Omit<TaskData, "createdAt">
 ) => {
+  if (!taskData.userId) {
+    throw new Error("User ID is required");
+  }
   try {
+    console.log("Adding task with data:", taskData);
     const tasksRef = collection(db, "tasks");
     const newTask = {
       ...taskData,

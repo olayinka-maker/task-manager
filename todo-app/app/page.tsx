@@ -40,9 +40,15 @@ const TodoDashboard = () => {
 
   const taskPercentage = calculateTaskPercentage()
 
-  // if (!user) {
-  //   router.push("/sign-in");
-  // }
+  useEffect(() => {
+    if (!user) {
+      router.push("auth/sign-in");
+    }
+  }, [user, router]);
+  
+  if (!user) {
+    return null; 
+  }
 
   return (
     <div className="min-h-screen w-full relative flex flex-col overflow-hidden bg-white">

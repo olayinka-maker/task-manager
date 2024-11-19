@@ -57,7 +57,7 @@ const SignUpPage = () => {
     e.preventDefault();
     ``;
     if (user) {
-      router.push("/dashboard");
+      router.push("/");
     }
     if (!validateForm()) {
       return;

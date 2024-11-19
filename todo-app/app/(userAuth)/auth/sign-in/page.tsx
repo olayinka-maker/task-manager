@@ -184,7 +184,7 @@ const SignIn = () => {
                 className="text-white bg-non border-none underline hover:text-amber-800 p-0"
                 disabled={isLoading}
               >
-                <Link href={"auth/sign-up"}>
+                <Link href={"sign-up"}>
                   Create <span>here</span>
                 </Link>
               </Button>

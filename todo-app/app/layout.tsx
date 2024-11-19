@@ -34,10 +34,7 @@ export default function RootLayout({
         <AuthProvider>
           <ModalProvider>
             <TaskProvider>
-             {/* Only render SideBarWrapper if we're not in the userAuth group */}
-             {!window.location.pathname.includes('/auth') && (
-                <SideBarWrapper />
-              )}
+                <SideBar/>
               {children}
             </TaskProvider>
           </ModalProvider>
